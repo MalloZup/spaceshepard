@@ -8,19 +8,18 @@ import (
 
 // Run a ssh command given a target
 func Run(cmd string) (bytes.Buffer, error) {
-
+        var hostKey ssh.PublicKey
 	// remove this from function
 	config := &ssh.ClientConfig{
 		User: "root",
 		Auth: []ssh.AuthMethod{
 			ssh.Password("linux"),
 		},
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+         HostKeyCallback: ssh.FixedHostKey(hostKey),
 	}
 
 	// make this configurable via json later
-	server := "suma-refhead-srv.mgr.suse.de:22"
-	client, err := ssh.Dial("tcp", server, config)
+	client, err := ssh.Dial("tcp", "suma-refhead-srv.mgr.suse.de:22" , config)
 	if err != nil {
 		panic("Failed to dial: " + err.Error())
 	}
