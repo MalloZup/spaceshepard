@@ -1,10 +1,11 @@
 package ssh
 
 import (
-         "golang.org/x/crypto/ssh"
-         "bytes"
-         "fmt"
-       )
+	"bytes"
+	"fmt"
+	"golang.org/x/crypto/ssh"
+)
+
 // Run a ssh command given a target
 func Run(cmd string) (bytes.Buffer, error) {
 
@@ -14,6 +15,7 @@ func Run(cmd string) (bytes.Buffer, error) {
 		Auth: []ssh.AuthMethod{
 			ssh.Password("linux"),
 		},
+		HostKeyCallBack: ssh.InsecureIgnoreHostKey(),
 	}
 
 	// make this configurable via json later
