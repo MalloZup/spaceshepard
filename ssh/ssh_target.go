@@ -15,7 +15,7 @@ func Run(cmd string) (bytes.Buffer, error) {
 		Auth: []ssh.AuthMethod{
 			ssh.Password("linux"),
 		},
-		HostKeyCallBack: ssh.InsecureIgnoreHostKey(),
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 
 	// make this configurable via json later
