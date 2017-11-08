@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
-
+import (
+         "fmt"
+         "github.com/MalloZup/spaceshepard/ssh"
+       )
 func main() {
 	fmt.Printf("SpaceShepard.\n")
+        ssh.run('uptime')
 }
