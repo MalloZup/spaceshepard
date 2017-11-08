@@ -1,11 +1,14 @@
 package ssh
 
-import "golang.org/x/crypto/ssh"
-import "bytes"
-
+import (
+         "golang.org/x/crypto/ssh"
+         "bytes"
+         "fmt"
+       )
+// Run a ssh command given a target
 func Run(cmd string) (bytes.Buffer, error) {
 
-        // remove this from function
+	// remove this from function
 	config := &ssh.ClientConfig{
 		User: "root",
 		Auth: []ssh.AuthMethod{
@@ -15,7 +18,7 @@ func Run(cmd string) (bytes.Buffer, error) {
 
 	// make this configurable via json later
 	port, server := ":22", "suma-refhead-srv.mgr.suse.de"
-	client, err := Dial("tcp", server+port, config)
+	client, err := ssh.Dial("tcp", server+port, config)
 	if err != nil {
 		panic("Failed to dial: " + err.Error())
 	}
@@ -28,9 +31,9 @@ func Run(cmd string) (bytes.Buffer, error) {
 
 	var b bytes.Buffer
 	session.Stdout = &b
-	err := session.Run("/usr/bin/whoami")
+	sshErr := session.Run("/usr/bin/whoami")
 	// just for debug
 	fmt.Println(b.String())
 
-	return b, err
+	return b, sshErr
 }
