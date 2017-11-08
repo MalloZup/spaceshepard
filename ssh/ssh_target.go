@@ -19,8 +19,8 @@ func Run(cmd string) (bytes.Buffer, error) {
 	}
 
 	// make this configurable via json later
-	port, server := ":22", "suma-refhead-srv.mgr.suse.de"
-	client, err := ssh.Dial("tcp", server+port, config)
+	server := "suma-refhead-srv.mgr.suse.de:22"
+	client, err := ssh.Dial("tcp", server, config)
 	if err != nil {
 		panic("Failed to dial: " + err.Error())
 	}
@@ -33,6 +33,7 @@ func Run(cmd string) (bytes.Buffer, error) {
 
 	var b bytes.Buffer
 	session.Stdout = &b
+        // make this via json later
 	sshErr := session.Run("/usr/bin/whoami")
 	// just for debug
 	fmt.Println(b.String())
