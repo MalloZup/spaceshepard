@@ -4,18 +4,28 @@ import (
     "bytes"
     "log"
     "os/exec"
+    "sync"
 )
 
+func runCmd(remMachine string, command string, wg *sync.WaitGroup) {
+    wg.Add(1)
 
-
-
-func main() {
-    var remoteMachine  = "root@localhost"
+    go func() {
+    cmd := exec.Command("ssh", remMachine, command)
     var out bytes.Buffer
-    cmd := exec.Command("ssh", remoteMachine, "uptime")
     cmd.Stdout = &out
     err := cmd.Run()
     if err != nil {
         log.Fatal(err)
     }
+  }
+   defer wg.Done()
+}
+
+
+func main() {
+    var remoteMachine  = "root@localhost"
+    var wg sync.WaitGroup
+    runCmd(remoteMachine, "uptime", &wg)
+    wg.Wait()
 }
